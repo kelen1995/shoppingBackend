@@ -34,7 +34,7 @@ function getOrderData() {
     .then(res => {
         console.log(res.data);
         currentOrderData = res.data;
-        createChart(BYCATEGORY,res.data);
+        createChart(BYITEM,res.data);
         renderOrderTable(res.data);
     })
     .catch(err => {
@@ -122,12 +122,34 @@ function createOrdersByItemChart(orderData) {
     // console.log(itemPrice);
 
     let columnsData = [];
+    let ary = [];
     let keys = Object.keys(itemPrice);
     keys.forEach(key => {
-        let item = key;
-        let totalPrice = itemPrice[key];
-        columnsData.push([item, totalPrice]);
+        let obj = {};
+        obj.title = key;
+        obj.price = itemPrice[key];
+        ary.push(obj);
+    })
+
+    ary.sort((a,b) => {
+        if (a.price > b.price) return 1;
+        else return -1;
     });
+
+    let topSale = ary.pop();
+    let secondSale = ary.pop();
+    let thirdSale = ary.pop();
+    let otherSale = ary.reduce((acc,cur) =>{
+        acc.price += cur.price;
+        return acc;
+    },{title:'其他', price:0});
+
+    columnsData = [
+        [topSale.title, topSale.price],
+        [secondSale.title, secondSale.price],
+        [thirdSale.title, thirdSale.price],
+        [otherSale.title, otherSale.price]
+    ]
 
     let chart = c3.generate({
         bindto: '#chart',
