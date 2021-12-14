@@ -57,9 +57,9 @@ function createOrdersByCategoryChart(orderData) {
         let products = order.products;
         products.forEach(product => {
             if (categoryPrice[product.category]) {
-                categoryPrice[product.category] += product.price;
+                categoryPrice[product.category] += product.price * product.quantity;
             } else {
-                categoryPrice[product.category] = product.price;
+                categoryPrice[product.category] = product.price * product.quantity;
             }
         })
     })
@@ -94,9 +94,9 @@ function createOrdersByItemChart(orderData) {
         let products = order.products;
         products.forEach(product => {
             if (itemPrice[product.title]) {
-                itemPrice[product.title] += product.price;
+                itemPrice[product.title] += product.price * product.quantity;
             } else {
-                itemPrice[product.title] = product.price;
+                itemPrice[product.title] = product.price * product.quantity;
             }
         });
     });
@@ -172,4 +172,11 @@ function getFormatDate(timestamp) {
 
 function isPaid(paid) {
     return paid ? '已處理' : '未處理';
+}
+
+function bindRemoveOrderEvent() {
+
+
+
+
 }
